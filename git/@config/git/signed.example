@@ -1,5 +1,6 @@
 # signed: user-specific git settings loaded on main/master branches
 [user]
-	signingkey = 0x7A6D992811A9E720
+	# Replace <YOUR_GPG_KEY_ID> with your actual GPG signing key ID
+	signingkey = <YOUR_GPG_KEY_ID>
 [commit]
 	gpgsign = true
