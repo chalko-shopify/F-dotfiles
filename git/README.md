@@ -3,7 +3,7 @@
 User-level Git configuration.
 
 <!--- Tree block injection -->
-    └── .gitconfig
+    └── .gitconfig 	# user-level Git configuration
 
 This package currently preserves the working `~/.gitconfig` as the first step of a slow migration.
 

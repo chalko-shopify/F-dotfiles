@@ -1,3 +1,5 @@
+# .gitconfig: user-level Git configuration
+
 [include]
 	path = /Users/nick.chalko/.config/dev/gitconfig
 [user]

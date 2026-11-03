@@ -6,11 +6,8 @@ This package owns the **core zsh startup skeleton** only. Other packages can con
     ├── .p10k.zsh
     ├── .zprofile 	# login shell zsh setup and profile snippet loader
     ├── .zshenv 	# minimal zsh environment for all zsh invocations
-    ├── .zshrc
+    ├── .zshrc 	# interactive shell zsh setup and rc snippet loader
     └── @config
-        ├── @Darwin
-        │   └── zsh
-        │       └── rc.d
         └── zsh
             └── rc.d
                 ├── 10_zsh_user_local_bin.zshrc 	# add user-local executables to PATH
