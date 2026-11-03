@@ -12,7 +12,10 @@ This package owns the **core zsh startup skeleton** only. Other packages can con
         │       └── rc.d
         └── zsh
             └── rc.d
-                └── 10_zsh_user_local_bin.zshrc 	# add user-local executables to PATH
+                ├── 10_zsh_user_local_bin.zshrc 	# add user-local executables to PATH
+                ├── 50_zsh_oh_my_zsh.zshrc 	# initialize Oh My Zsh
+                ├── 51_zsh_powerlevel10k.zshrc 	# source Powerlevel10k theme and user prompt configuration
+                └── 52_zsh_user_configuration_notes.zshrc 	# preserve Oh My Zsh user configuration examples
 
 ## Startup model
 
