@@ -138,5 +138,7 @@ The archived packages under `_archive/legacy-packages` show the older version of
 The new pattern keeps that mixin idea but standardizes interactive snippets under `zsh/rc.d` with numeric ordering and uses dotstow OS/host layers such as `@config/@Darwin` for platform-specific integrations.
 
 <!--- Tree block injection -->
-    0 directories, 0 files
+    ├── .p10k.zsh
+    ├── .zprofile
+    └── .zshrc
 
