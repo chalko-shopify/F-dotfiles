@@ -1,0 +1,26 @@
+# private keys and certificates
+.ssh/id_*
+!.ssh/id_*.pub
+.ssh/*_rsa
+.ssh/*_ed25519
+!.ssh/*_ed25519.pub
+.ssh/*_ecdsa
+!.ssh/*_ecdsa.pub
+.ssh/*_dsa
+!.ssh/*_dsa.pub
+.ssh/*.pem
+.ssh/*.key
+.ssh/*-cert.pub
+
+# host/cache/state
+.ssh/known_hosts
+.ssh/known_hosts.old
+.ssh/authorized_keys
+.ssh/control-*
+.ssh/agent/
+.ssh/config.d/*local*.conf
+.ssh/config.d/90_local.conf
+
+# allow examples
+!*.example
+!.ssh/**/*.example
