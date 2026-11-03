@@ -5,6 +5,7 @@ This package owns the **core zsh startup skeleton** only. Other packages can con
 <!--- Tree block injection -->
     ├── .p10k.zsh
     ├── .zprofile 	# login shell zsh setup and profile snippet loader
+    ├── .zshenv 	# minimal zsh environment for all zsh invocations
     ├── .zshrc
     └── @config
         ├── @Darwin
