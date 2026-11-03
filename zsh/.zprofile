@@ -1,5 +1,10 @@
-eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+# .zprofile: login shell zsh setup and profile snippet loader
 
-# Added by tec agent
-[[ ! -o interactive ]] && [[ -d /Users/nick.chalko/.local/state/tec/toolchain/base_profile/bin ]] && export PATH="/Users/nick.chalko/.local/state/tec/toolchain/base_profile/bin:$PATH"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 
+# load zsh profile config files
+profile_files=(${XDG_CONFIG_HOME}/**/*.zprofile(N))
+for file in ${profile_files}
+do
+  source $file
+done

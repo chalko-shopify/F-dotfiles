@@ -2,6 +2,18 @@
 
 This package owns the **core zsh startup skeleton** only. Other packages can contribute shell behavior by stowing zsh snippets into the shared `XDG_CONFIG_HOME` zsh snippet directories.
 
+<!--- Tree block injection -->
+    ├── .p10k.zsh
+    ├── .zprofile 	# login shell zsh setup and profile snippet loader
+    ├── .zshrc
+    └── @config
+        ├── @Darwin
+        │   └── zsh
+        │       └── rc.d
+        └── zsh
+            └── rc.d
+                └── 10_zsh_user_local_bin.zshrc 	# add user-local executables to PATH
+
 ## Startup model
 
 The top-level zsh files should stay small and predictable:
@@ -136,16 +148,4 @@ This is intentionally the reverse of a clean-room rewrite: first make dotstow ow
 The archived packages under `_archive/legacy-packages` show the older version of this idea: packages such as `brew`, `go`, `gnupg`, and `linux` contributed files under `@config/zsh/...`, while the root zsh package sourced zsh snippets from `XDG_CONFIG_HOME`.
 
 The new pattern keeps that mixin idea but standardizes interactive snippets under `zsh/rc.d` with numeric ordering and uses dotstow OS/host layers such as `@config/@Darwin` for platform-specific integrations.
-
-<!--- Tree block injection -->
-    ├── .p10k.zsh
-    ├── .zprofile
-    ├── .zshrc
-    └── @config
-        ├── @Darwin
-        │   └── zsh
-        │       └── rc.d
-        └── zsh
-            └── rc.d
-                └── 10_zsh_user_local_bin.zshrc 	# add user-local executables to PATH
 

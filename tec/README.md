@@ -5,6 +5,8 @@ tec-managed shell toolchain initialization.
 <!--- Tree block injection -->
     └── @config
         └── zsh
+            ├── profile.d
+            │   └── 90_tec_noninteractive_path.zprofile 	# add tec toolchain bin to PATH for non-interactive login shells
             └── rc.d
                 └── 90_tec_init.zshrc 	# initialize tec-managed shell toolchain late
 
