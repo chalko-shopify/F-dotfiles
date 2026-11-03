@@ -117,10 +117,6 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# User-local executables
-path=("$HOME/.local/bin" $path)
-export PATH
-
 # load zsh config files
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 config_files=(${XDG_CONFIG_HOME}/**/*.zshrc(N))

@@ -140,5 +140,9 @@ The new pattern keeps that mixin idea but standardizes interactive snippets unde
 <!--- Tree block injection -->
     ├── .p10k.zsh
     ├── .zprofile
-    └── .zshrc
+    ├── .zshrc
+    └── @config
+        └── zsh
+            └── rc.d
+                └── 10_zsh_user_local_bin.zshrc 	# add user-local executables to PATH
 
