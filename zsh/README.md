@@ -145,7 +145,6 @@ The new pattern keeps that mixin idea but standardizes interactive snippets unde
         ├── @Darwin
         │   └── zsh
         │       └── rc.d
-        │           └── 50_zsh_iterm_shell_integration.zshrc 	# source iTerm2 shell integration on macOS
         └── zsh
             └── rc.d
                 └── 10_zsh_user_local_bin.zshrc 	# add user-local executables to PATH
