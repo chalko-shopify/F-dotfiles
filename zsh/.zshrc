@@ -125,6 +125,3 @@ do
   source $file
 done
 
-# Added by tec agent
-[[ -x /Users/nick.chalko/.local/state/tec/profiles/base/current/global/init ]] && eval "$(/Users/nick.chalko/.local/state/tec/profiles/base/current/global/init zsh)"
-

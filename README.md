@@ -2,60 +2,168 @@
 
 # F-dotfiles
 
+Personal dotfiles managed with GNU Stow, `dotstow`, and package-level README generation.
 
-This is a fork of https://github.com/Kraymer/F-dotfiles
+This repository is the Shopify/work version of my dotstow fork at <https://github.com/chalko/F-dotfiles>, which is based on and credits Kraymer's original F-dotfiles project: <https://github.com/Kraymer/F-dotfiles>.
 
-> **/ɛfdɒtfaɪlz/** :
+> **/ɛfdɒtfaɪlz/**
 >
-> *n.* stands for *Full-fledged-Über-Clean-Kraymer dotfiles.*, an opinionated dotfiles organization scheme based on stow.
-Great effort is put on self-documentation and ease of maintenance.
+> *n.* originally stands for *Full-fledged-Über-Clean-Kraymer dotfiles.*, an opinionated dotfiles organization scheme based on Stow.
 
+## Current direction
+
+This fork keeps the useful F-dotfiles pattern while rebuilding the actual dotfile contents slowly and intentionally:
+
+- active packages live at the repository root, e.g. `zsh/`, `iterm/`, `dotstow/`, `_stow/`
+- inherited/non-authoritative packages are archived under `_archive/legacy-packages/`
+- packages are installed with `dotstow <package>`
+- `zsh` is being migrated gradually from a working monolithic config to a small loader plus package-provided mixins
+- package READMEs are generated with `f-dotfiles.py` and should document package-specific install notes
 
 ## Features
 
-- **`stow` powered:** symlink dotfiles and thus keep them always up-to-date in your repository
-- **topical organization:** organize dotfiles by application packages facilitating reuse across different machines
-- **discoverability:** self-documented packages making the architecture easy to browse while staying compatible with `stow` symlinking mechanism
+- **GNU Stow powered:** dotfiles are symlinked from this repo into `$HOME` and `$XDG_CONFIG_HOME`.
+- **`dotstow` wrapper:** installs base package files, OS-specific files, host-specific files, and XDG config files in the right order.
+- **Topical packages:** group config by tool/application.
+- **Mixin-friendly zsh:** packages can contribute ordered zsh snippets under `@config/zsh/rc.d` or OS/host-specific variants.
+- **Self-documenting packages:** package READMEs include generated tree listings enriched by inline file descriptions.
 
+## Bootstrap
 
-## Install
+Prerequisites:
 
-1. clone the repository : `git clone https://github.com/F-dotfiles/F-dotfiles.git ~/ ; cd ~/F-dotfiles`
-1. setup `stow`, *inception style* : `stow -t ~ _stow` 
-1. install desired package via `stow <directory>` <sup id="a1">[1](#f1)</sup>
+```bash
+brew install stow tree
+pnpm install
+```
 
-When needed, special install instructions are present in package `README.md` file
+Bootstrap Stow's own config:
 
+```bash
+stow -t ~ _stow
+```
 
-## Rules
+Bootstrap the `dotstow` command:
 
-> *Walter -* That rules really tie the repo together, do they not?  
-> *The Dude -* F!@#$ A ! <sup id="a2">[2](#f2)</sup>
+```bash
+./scripts/dotstow dotstow
+```
 
-### Documentation <sup><sub>[f-dotfiles.py](f-dotfiles.py)</sub></sup>
+After that, install packages with:
 
-Dotfiles repositories are too often grimoire-like collection of ancient formulas, only usable by their original author.
+```bash
+dotstow zsh
+dotstow iterm
+```
 
-F-dotfiles avoid this pitfall by paying special attention to packages documentation : run `pnpm install` to install the Husky-managed pre-commit hook that runs [f-dotfiles.py](f-dotfiles.py), ensuring package `README.md` tree listings are automatically updated and staged when committing.  
-Files descriptions that match the format `# <filename>: description` are extracted too and enrich the tree listing.
+Use the wrapper path if `~/.local/bin` is not on `PATH` yet:
 
-Other instructions like install notes and requirements should be manually entered by editing the `README.md` files directly, and can live peacefully alongside auto-generated tree view content. 
+```bash
+./scripts/dotstow <package>
+```
 
-### Ignore files <sup><sub>[[cf example]](https://github.com/F-dotfiles/F-dotfiles/blob/master/_sublime_text_3/.gitignore)</sub></sup>
+## Package layout
 
-Quoting stow [documentation](https://www.gnu.org/software/stow/manual/html_node/Installing-Packages.html#Installing-Packages) :
+Each active package can contain:
 
-> if Stow can create a single symlink that points to an entire subtree within the package tree, it will choose to do that rather than create a directory in the target tree and populate it with symlinks.
+```text
+package/
+  files-for-$HOME
+  @config/
+    files-for-$XDG_CONFIG_HOME
+  @Darwin/
+    macOS-only files for $HOME
+  @Linux/
+    Linux-only files for $HOME
+  @HOSTNAME/
+    host-only files for $HOME
+  @config/@Darwin/
+    macOS-only files for $XDG_CONFIG_HOME
+  @config/@Linux/
+    Linux-only files for $XDG_CONFIG_HOME
+  @config/@HOSTNAME/
+    host-only files for $XDG_CONFIG_HOME
+```
 
-`.gitignore` can be present in packages because of this behaviour, in order to avoid having your repository cluttered with unknown files.
+## Zsh mixin pattern
 
-### Secret files <sup><sub>[[cf example]](https://github.com/F-dotfiles/F-dotfiles/blob/master/git/.config/git/credentials.example)
+The `zsh` package owns the core shell loader. Other packages can contribute shell behavior by stowing snippets into shared zsh snippet directories.
 
-Files that contain sensitive information and should not be published are kept secret using package specific `.gitignore` files.
-Because the secret file itself is not tracked, a template is committed instead having same name but with the `.example` suffix appended. This template is intended to serve as a base for editing and can be renamed (removing the suffix) after its content is edited.
+Interactive zsh rc snippets should use this filename shape:
 
+```text
+NN_<package>_<thing>.zshrc
+```
 
+Ordering convention:
+
+```text
+10_*  early prerequisites such as PATH/XDG setup
+50_*  mostly order-independent package mixins
+90_*  late/final initialization such as tec/dev/devx
+```
+
+Examples:
+
+```text
+zsh/@config/zsh/rc.d/10_zsh_user_local_bin.zshrc
+iterm/@config/@Darwin/zsh/rc.d/50_iterm_shell_integration.zshrc
+```
+
+The migration strategy is intentionally slow:
+
+1. preserve current working shell behavior
+2. stow it as-is
+3. add a snippet loader
+4. extract one small behavior at a time
+5. move stable snippets into dedicated packages when boundaries are clear
+
+## Package documentation
+
+Package READMEs should use this order:
+
+1. title
+2. one-line summary
+3. generated tree block
+4. description/details
+5. prerequisites / installation
+
+Every active package README should contain:
+
+```markdown
+<!--- Tree block injection -->
+```
+
+Regenerate package trees manually with:
+
+```bash
+./scripts/f-dotfiles
+```
+
+The Husky pre-commit hook also runs this script and stages package README updates.
+
+Inline file descriptions in the first 10 lines are included in generated trees:
+
+```sh
+# filename: short description
+```
+
+## Secrets
+
+Never commit real secrets, credentials, passwords, tokens, or private keys.
+
+For secret-sensitive config:
+
+- ignore the real file with a package-specific `.gitignore`
+- commit a `.example` template with dummy values
+- keep generated local state/cache files out of tracked packages
+
+## Credits
+
+- Original F-dotfiles project by Kraymer: <https://github.com/Kraymer/F-dotfiles>
+- My dotstow fork: <https://github.com/chalko/F-dotfiles>
+- This repository: the Shopify/work version of that dotstow fork
 
 ---
-<i id="f1">1</i> it's because we installed `stow` package at step 2 that the flag `-t ~` can be omitted here, see [`.stowrc`](https://github.com/F-dotfiles/F-dotfiles/blob/master/stow/.stowrc) [⤸](#a1)  
-<i id="f2">2</i> https://www.youtube.com/watch?v=ezQLP1dj_t8 [⤸](#a2)
+
+<i id="f1">GNU Stow documentation:</i> <https://www.gnu.org/software/stow/manual/stow.html>

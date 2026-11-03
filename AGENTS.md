@@ -4,30 +4,38 @@ This file outlines the rules, guidelines, and behavioral constraints for AI agen
 
 ## Repository Overview
 
-`F-dotfiles` is an opinionated, topical dotfiles organization scheme based on GNU `stow`. It organizes dotfiles into application-specific package directories at the repository root (e.g., `zsh/`, `git/`, `linux/`).
+`F-dotfiles` is an opinionated, topical dotfiles organization scheme based on GNU `stow` plus the local `dotstow` wrapper. It organizes active dotfiles into application-specific package directories at the repository root (e.g., `zsh/`, `iterm/`, `git/`). Inherited/non-authoritative packages may live under `_archive/legacy-packages/` for reference and must not be stowed directly.
 
 ## Architectural Rules
 
 ### 1. Package Directory Structure & Stow Conventions
-Every package folder (e.g., `git`, `zsh`) follows a specific layout. Files in these folders are symlinked to the user's home directory.
+Every active package folder (e.g., `zsh`, `iterm`) follows a specific layout. Files in these folders are symlinked to the user's home directory by `dotstow`.
 * **Base Package Files**: Place common configuration files directly in the package directory.
 * **OS-Specific Overrides**: Place OS-specific overrides in a subdirectory named `@${OS}` (e.g., `@Linux`, `@Darwin`).
 * **Host-Specific Overrides**: Place host-specific overrides in a subdirectory named `@${HOSTNAME}` (e.g., `@my-laptop`).
 * **XDG Config Home (`~/.config`)**: Place files destined for `XDG_CONFIG_HOME` under `@config`.
   * OS-specific configs in `XDG_CONFIG_HOME` go under `@config/@${OS}`.
   * Host-specific configs in `XDG_CONFIG_HOME` go under `@config/@${HOSTNAME}`.
+* **Installation**: Prefer `dotstow <package>` after the `dotstow` package has bootstrapped `~/.local/bin/dotstow`. Use `./scripts/dotstow <package>` when the command is not yet on `PATH`.
 
 ---
 
 ### 2. Package Documentation (`f-dotfiles.py`)
-F-dotfiles uses a custom Python script [f-dotfiles.py](file:///home/nick/.gemini/antigravity/worktrees/F-dotfiles/create-agents-documentation/f-dotfiles.py) (run via pre-commit hooks or manually) to automatically document packages.
-* **Sentinel Comment**: Every package's `README.md` must contain the comment `<!--- Tree block injection -->`. The script injects the auto-generated directory tree view right after this comment.
+F-dotfiles uses the local Python script [`f-dotfiles.py`](f-dotfiles.py) (run by the Husky pre-commit hook or manually) to automatically document packages.
+* **README Layout**: Prefer package `README.md` files in this order:
+  1. Title
+  2. One-line summary
+  3. Generated tree block
+  4. Longer description/details
+  5. Prerequisites / installation
+* **Sentinel Comment**: Every active package's `README.md` must contain the comment `<!--- Tree block injection -->`. The script injects the auto-generated directory tree view right after this comment and preserves content after the generated block.
 * **Inline File Descriptions**: For any configuration file or script in a package, add a description comment in the first 10 lines in the format:
   ```
   # <filename>: <description>
   ```
-  For example, in `aliases.zsh`: `# aliases.zsh: shell aliases`. The script extracts these comments to enrich the generated tree listing.
-* **Regeneration**: Do not manually modify the tree listing block in package `READMEs`. Run `python3 f-dotfiles.py` to regenerate the documentation automatically.
+  For example, in `10_zsh_user_local_bin.zshrc`: `# 10_zsh_user_local_bin.zshrc: add user-local executables to PATH`. The script extracts these comments to enrich the generated tree listing.
+* **Regeneration**: Do not manually modify the generated tree listing block in package `READMEs`. Run `./scripts/f-dotfiles` to regenerate the documentation. The Husky pre-commit hook also runs this script and stages package README updates.
+* **Hooks**: This repo uses `pnpm` + Husky, not the Python `pre-commit` framework. Run `pnpm install` to install hooks.
 
 ---
 
@@ -40,6 +48,20 @@ F-dotfiles uses a custom Python script [f-dotfiles.py](file:///home/nick/.gemini
 
 ### 4. Git and Ignore Rules
 * Keep directories clean. Use `.gitignore` or `.stow-local-ignore` files within package directories to prevent unwanted files (e.g., local state, caches) from being symlinked or tracked.
+* Do not commit `node_modules/`; JavaScript tooling is managed with `pnpm` and `pnpm-lock.yaml`.
+
+---
+
+### 5. Zsh Mixin Pattern
+The `zsh` package should gradually become a small loader. Application/tool packages can contribute shell behavior by stowing snippets into shared zsh snippet directories.
+* Interactive zsh rc snippets should use the filename shape `NN_<package>_<thing>.zshrc`.
+  * `10_*`: early prerequisites such as fundamental PATH/XDG setup.
+  * `50_*`: mostly order-independent package mixins.
+  * `90_*`: late/final initialization, especially tools such as `tec`/`dev`/`devx` that want to be last.
+* Cross-platform snippets go under `@config/zsh/rc.d/`.
+* OS-specific snippets go under `@config/@${OS}/zsh/rc.d/`, e.g. `iterm/@config/@Darwin/zsh/rc.d/50_iterm_shell_integration.zshrc`.
+* Host-specific snippets go under `@config/@${HOSTNAME}/zsh/rc.d/`.
+* Migrate shell config slowly: first preserve current working behavior, then extract pieces into snippets, then move snippets to dedicated packages when package boundaries are clear.
 
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:46cd31e7 -->
 ## Beads Issue Tracker
