@@ -121,6 +121,14 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 path=("$HOME/.local/bin" $path)
 export PATH
 
+# load zsh config files
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+config_files=(${XDG_CONFIG_HOME}/**/*.zshrc(N))
+for file in ${config_files}
+do
+  source $file
+done
+
 # Added by tec agent
 [[ -x /Users/nick.chalko/.local/state/tec/profiles/base/current/global/init ]] && eval "$(/Users/nick.chalko/.local/state/tec/profiles/base/current/global/init zsh)"
 
