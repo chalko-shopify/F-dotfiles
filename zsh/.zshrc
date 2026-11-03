@@ -128,5 +128,3 @@ done
 # Added by tec agent
 [[ -x /Users/nick.chalko/.local/state/tec/profiles/base/current/global/init ]] && eval "$(/Users/nick.chalko/.local/state/tec/profiles/base/current/global/init zsh)"
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
