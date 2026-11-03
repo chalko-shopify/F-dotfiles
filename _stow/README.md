@@ -3,5 +3,5 @@
 
 <!--- Tree block injection -->
     ├── .stow-global-ignore 	# files for F-dotfiles framework that should be skipped
-    └── .stowrc 	# 🔏 User home directory
+    └── .stowrc 	# GNU Stow defaults for this dotfiles repository
 

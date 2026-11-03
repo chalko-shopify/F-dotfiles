@@ -1,3 +1,2 @@
-# .stowrc: 🔏 User home directory
+# .stowrc: GNU Stow defaults for this dotfiles repository
 
- --target=/home/nick/
