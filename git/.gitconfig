@@ -1,0 +1,16 @@
+[include]
+	path = /Users/nick.chalko/.config/dev/gitconfig
+[user]
+	name = Nick Chalko
+	email = nick.chalko@shopify.com
+[core]
+	editor = code -w
+[http]
+	postBuffer = 524288000
+[shop-world "stale-pr-cutoff"]
+	main = 1793557982
+[credential "https://*.quick.shopify.io"]
+	helper = 
+	helper = /Users/nick.chalko/.config/quick/quick-git-credential.sh
+[http "https://*.quick.shopify.io/"]
+	extraHeader = X-Requested-With: XMLHttpRequest
