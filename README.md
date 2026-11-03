@@ -36,7 +36,7 @@ When needed, special install instructions are present in package `README.md` fil
 
 Dotfiles repositories are too often grimoire-like collection of ancient formulas, only usable by their original author.
 
-F-dotfiles avoid this pitfall by paying special attention to packages documentation : run `pre-commit install` to enable [f-dotfiles.py](f-dotfiles.py) hook that ensures that packages `README.md` tree listings are automatically updated when committing.  
+F-dotfiles avoid this pitfall by paying special attention to packages documentation : run `pnpm install` to install the Husky-managed pre-commit hook that runs [f-dotfiles.py](f-dotfiles.py), ensuring package `README.md` tree listings are automatically updated and staged when committing.  
 Files descriptions that match the format `# <filename>: description` are extracted too and enrich the tree listing.
 
 Other instructions like install notes and requirements should be manually entered by editing the `README.md` files directly, and can live peacefully alongside auto-generated tree view content. 

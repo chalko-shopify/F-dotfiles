@@ -1,0 +1,15 @@
+{
+  "name": "f-dotfiles",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.34.5",
+  "description": "Personal dotfiles managed with dotstow and GNU Stow.",
+  "scripts": {
+    "prepare": "husky",
+    "f-dotfiles": "./scripts/f-dotfiles",
+    "test": "python3 -m unittest test_f_dotfiles.py"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

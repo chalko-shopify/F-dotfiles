@@ -1,4 +1,16 @@
 #! /bin/sh
+# dotstow: stow a dotfiles package with base, OS, host, and XDG config layers
+
+set -eu
+
+usage() {
+  echo "Usage: dotstow <package>" >&2
+}
+
+if [ "$#" -ne 1 ]; then
+  usage
+  exit 2
+fi
 
 DOT_STOW_HOME="${DOT_STOW_HOME:-$HOME/F-dotfiles}"
 PACKAGE=$1

@@ -3,6 +3,7 @@
 .DS_Store
 .envrc
 .venv
+node_modules/
 /bin/
 __pycache__/
 *.py[cod]
